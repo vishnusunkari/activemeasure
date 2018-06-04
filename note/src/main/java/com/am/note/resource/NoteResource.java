@@ -1,6 +1,10 @@
 package com.am.note.resource;
 
+import com.am.note.model.Note;
+import com.am.note.service.NotesService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -8,27 +12,28 @@ import java.util.List;
 @RestController
 @RequestMapping("/noteapp/notes")
 public class NoteResource {
-    @Autowired
+
     NotesService notesService;
 
+    @Autowired
+    NoteResource(NotesService notesService) {
+        this.notesService = notesService;
+    }
+
     @GetMapping("/")
-    public List<String> getQuotes(@PathVariable("username") final String username){
-        return quotesRepository.findByUsername(username).stream().map(quote -> quote.getQuote()).collect(Collectors.toList());
+    public List<Note> getNotes(@PathVariable("email") final String email){
+        return notesService.getAllNotes(email);
     }
 
     @PostMapping("/")
-    public List<String> add(@RequestBody final Quotes quotes){
-        for(String quoteStr : quotes.getQuotes()){
-            Quote quote = new Quote(quotes.getUsername(), quoteStr);
-            quotesRepository.save(quote);
-        }
-        return getQuotes(quotes.getUsername());
+    public ResponseEntity add(@RequestBody final Note note){
+        String userEmail = "abc@gmail.com";
+        notesService.createNotes(note, userEmail);
+        return new ResponseEntity<String>("SUCCESS", HttpStatus.CREATED);
     }
 
-    @DeleteMapping("/")
-    public List<String> delete(@PathVariable("username") final String username){
-        List<Quote> quotes = quotesRepository.findByUsername(username);
-        quotesRepository.deleteAll(quotes);
-        return quotes.stream().map(Quote::getQuote).collect(Collectors.toList());
-    }
+    /*@DeleteMapping("/")
+    public ResponseEntity delete(@PathVariable("username") final String username){
+        notesService.deleteNotes(notes)
+    }*/
 }

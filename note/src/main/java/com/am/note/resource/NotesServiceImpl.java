@@ -4,9 +4,12 @@ import com.am.note.dao.NotesRepository;
 import com.am.note.model.Note;
 import com.am.note.service.NotesService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Component
 public class NotesServiceImpl implements NotesService {
     NotesRepository notesRepository;
 
@@ -17,7 +20,7 @@ public class NotesServiceImpl implements NotesService {
 
     @Override
     public List<Note> getAllNotes(String email) {
-        return null;
+        return notesRepository.findByEmail(email);
     }
 
     @Override

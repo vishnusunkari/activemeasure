@@ -28,6 +28,9 @@ public class Note {
     @Column(name = "update_time")
     private DateTime updateTime;
 
+    @Column(name="createdby")
+    private String createdBy;
+
     public Integer getId() {
         return id;
     }
@@ -66,5 +69,21 @@ public class Note {
 
     public void setUpdateTime(DateTime updateTime) {
         this.updateTime = updateTime;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getCreatedBy() {
+        return createdBy;
+    }
+
+    public void setCreatedBy(String createdBy) {
+        this.createdBy = createdBy;
     }
 }
